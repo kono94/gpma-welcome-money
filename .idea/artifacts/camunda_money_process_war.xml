@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="camunda-money-process:war">
+    <output-path>$PROJECT_DIR$/camunda-money-process/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>camunda-money-process</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="camunda-money-process.war">
+      <element id="artifact" artifact-name="camunda-money-process:war exploded" />
+    </root>
+  </artifact>
+</component>

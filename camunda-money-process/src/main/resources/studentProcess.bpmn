@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0t4zxmh" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+  <bpmn:process id="StudentProcess" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_11qfyex</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_11qfyex" sourceRef="StartEvent_1" targetRef="Activity_1850bbh" />
+    <bpmn:sequenceFlow id="Flow_1ib6nq9" sourceRef="Activity_1850bbh" targetRef="Activity_1vc51er" />
+    <bpmn:endEvent id="Event_1scgf3n">
+      <bpmn:incoming>Flow_14n3bd2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_1vc51er" name="Hole Student Infos">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="url">http://host.docker.internal:6666/ws/students</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="freemarker" resource="soapEnvelope.ftl" />
+            </camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-Type">text/xml</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="studentData">${S(response)
+.childElement("Body")
+.childElement("lwenstrom.net/ws/students", "getStudentResponse")
+.childElement("student")}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>soap-http-connector</camunda:connectorId>
+        </camunda:connector>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="birthday">
+            <camunda:script scriptFormat="javascript" resource="parseBirthday.js" />
+          </camunda:outputParameter>
+          <camunda:outputParameter name="avgScore">
+            <camunda:script scriptFormat="javascript" resource="parseScore.js" />
+          </camunda:outputParameter>
+          <camunda:outputParameter name="surname">
+            <camunda:script scriptFormat="javascript" resource="parseSurName.js" />
+          </camunda:outputParameter>
+          <camunda:outputParameter name="name">
+            <camunda:script scriptFormat="javascript" resource="parseName.js" />
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ib6nq9</bpmn:incoming>
+      <bpmn:outgoing>Flow_00p07di</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Activity_1850bbh" name="Eingabe Matrikelnummer">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="studentID" label="matrikelnummer" type="long" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_11qfyex</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ib6nq9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_00p07di" sourceRef="Activity_1vc51er" targetRef="Activity_1vkrg7c" />
+    <bpmn:userTask id="Activity_1vkrg7c" name="Display Infos" camunda:formKey="embedded:app:forms/display-student-info.html">
+      <bpmn:incoming>Flow_00p07di</bpmn:incoming>
+      <bpmn:outgoing>Flow_14n3bd2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_14n3bd2" sourceRef="Activity_1vkrg7c" targetRef="Event_1scgf3n" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="StudentProcess">
+      <bpmndi:BPMNEdge id="Flow_11qfyex_di" bpmnElement="Flow_11qfyex">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="290" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ib6nq9_di" bpmnElement="Flow_1ib6nq9">
+        <di:waypoint x="390" y="117" />
+        <di:waypoint x="440" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14n3bd2_di" bpmnElement="Flow_14n3bd2">
+        <di:waypoint x="700" y="117" />
+        <di:waypoint x="732" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_00p07di_di" bpmnElement="Flow_00p07di">
+        <di:waypoint x="540" y="117" />
+        <di:waypoint x="600" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17xh2sz_di" bpmnElement="Activity_1850bbh">
+        <dc:Bounds x="290" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1scgf3n_di" bpmnElement="Event_1scgf3n">
+        <dc:Bounds x="732" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1s79h0m_di" bpmnElement="Activity_1vkrg7c">
+        <dc:Bounds x="600" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ch6to8_di" bpmnElement="Activity_1vc51er">
+        <dc:Bounds x="440" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
