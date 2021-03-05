@@ -1,4 +1,4 @@
-package com.lwenstrom.blzwebservice;
+package net.lwenstrom.studentWebService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

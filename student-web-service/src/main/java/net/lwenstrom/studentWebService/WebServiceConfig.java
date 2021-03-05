@@ -1,4 +1,4 @@
-package com.lwenstrom.blzwebservice;
+package net.lwenstrom.studentWebService;
 
 
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
+import org.springframework.ws.soap.SoapVersion;
+import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
@@ -37,5 +39,12 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     @Bean
     public XsdSchema studentsSchema() {
         return new SimpleXsdSchema(new ClassPathResource("students.xsd"));
+    }
+
+    @Bean
+    public SaajSoapMessageFactory messageFactory() {
+        SaajSoapMessageFactory messageFactory = new SaajSoapMessageFactory();
+        messageFactory.setSoapVersion(SoapVersion.SOAP_12);
+        return messageFactory;
     }
 }

@@ -1,4 +1,4 @@
-package com.lwenstrom.blzwebservice;
+package net.lwenstrom.studentWebService;
 
 
 import net.lwenstrom.ws.students.GetStudentRequest;
@@ -23,7 +23,7 @@ public class StudentEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getStudentRequest")
     @ResponsePayload
     public GetStudentResponse getStudent(@RequestPayload GetStudentRequest request) {
-        System.out.println("Rquest");
+        System.out.println("Request");
         System.out.println(request.getStudentID());
         GetStudentResponse response = new GetStudentResponse();
         response.setStudent(studentRepository.findStudent(request.getStudentID()));
